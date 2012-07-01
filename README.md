@@ -1,4 +1,4 @@
-<img src="https://github.com/JamesEggers1/node-monarch/raw/master/images/Monarch_butterfly_USGS.png" style="height:118px; width:128px">
+<img src="https://github.com/JamesEggers1/node-monarch/raw/master/images/Monarch_butterfly_USGS.png" height="118px" width="128px">
 
 Monarch [![Build Status](https://secure.travis-ci.org/JamesEggers1/node-monarch.png)](http://travis-ci.org/JamesEggers1/node-monarch)
 =============
