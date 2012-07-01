@@ -5,13 +5,13 @@ Monarch is a command line utility for Node.js that provides a platform for perfo
 
 ## Installation ##
 
-TBD
+    npm install -g monarch
 
 ## Testing ##
 
 Monarch has unit tests built around it than can be used to verify the package before usage.  The tests are written with the Mocha and Should modules and running the below command will run all of the tests.  
 
-TBD
+    npm test monarch
 
 ## Usage ##
 
