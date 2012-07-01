@@ -1,9 +1,9 @@
 {
   "name": "monarch",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "author": "James Eggers <james.r.eggers@gmail.com> (http://www.jamesreggers.com/)",
   "description": "A command line utility for generic migrations in Node.js.",
-  "homepage": "https://github.com/JamesEggers1",
+  "homepage": "https://github.com/JamesEggers1/node-monarch",
   "repository": {
     "type": "git",
     "url": "git://github.com/JamesEggers1/node-monarch.git"
