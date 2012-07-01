@@ -1,6 +1,6 @@
 {
   "name": "monarch",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "author": "James Eggers <james.r.eggers@gmail.com> (http://www.jamesreggers.com/)",
   "description": "A command line utility for generic migrations in Node.js.",
   "homepage": "https://github.com/JamesEggers1/node-monarch",
@@ -16,7 +16,7 @@
   "scripts": {
 	"test": "mocha tests/all-tests.js -R spec"
   },
-  "tags": [ "migration", "change management"],
+  "tags": [ "migrate", "migration", "change management"],
   "bugs": {
     "url": "https://github.com/JamesEggers1/node-monarch/issues"
   },
