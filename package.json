@@ -1,0 +1,32 @@
+{
+  "name": "monarch",
+  "version": "1.0.0",
+  "author": "James Eggers <james.r.eggers@gmail.com> (http://www.jamesreggers.com/)",
+  "description": "A command line utility for generic migrations in Node.js.",
+  "homepage": "https://github.com/JamesEggers1",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/JamesEggers1/node-monarch.git"
+  },
+  "main": "./bin/monarch",
+  "engines": {
+    "node": "0.6"
+  },
+  "scripts": {
+	"test": "mocha tests/all-tests.js -R spec"
+  },
+  "tags": [ "migration", "change management"],
+  "bugs": {
+    "url": "https://github.com/JamesEggers1/node-monarch/issues"
+  },
+  "dependencies":{
+	"commander": "0.5.2",
+	"clog": "0.1.5",
+	"requiredir": "1.0.2"
+  },
+  "devDependencies": {
+	"should" : "0.6.3",
+	"mocha":"1.2.1",
+	"rimraf": "2.0.2"
+  }
+}

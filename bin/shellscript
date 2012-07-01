@@ -1,0 +1,51 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ */
+
+var program = require('commander')
+	, _clog = require("clog")
+	, _clogConfig = require("../configs/clog-config");
+
+_clogConfig.default();
+
+program
+ 	.version('0.0.1')
+ 	.option('-d, --debug', 'Runs the application in debugging mode.');
+
+program
+	.command("create <description>")
+	.description("Creates a new migration script")
+	.action(function(description){
+		if (program.debug) {_clogConfig.debug();}
+		require("../src/commands/create")(description);
+	});
+	
+program
+	.command("up [migration]")
+	.description("Runs the migration scripts up to the latest or specified version.")
+	.action(function(migration){
+		if (program.debug) {_clogConfig.debug();}
+		
+		require("../src/commands/up")(migration);
+	});
+	
+program
+	.command("down <migration>")
+	.description("Runs the migration scripts down to the specified version.")
+	.action(function(migration){
+		if (program.debug) {_clogConfig.debug();}
+
+		require("../src/commands/down")(migration);
+	});
+
+program
+	.command("status")
+	.description("Retrieves the current version of the migrations.")
+	.action(function(){
+		if (program.debug) {_clogConfig.debug();}
+		require("../src/commands/status")();
+	});
+
+program.parse(process.argv);
