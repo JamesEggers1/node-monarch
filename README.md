@@ -17,7 +17,7 @@ TBD
 
 Monarch is a command line utility.  Once the package is installed via NPM, you can begin using it as normal.  To get a list of commands and options for the utility, simply using the `--help` flag will provide the following information.
 
-    Usage: shellscript [options] [command]
+    Usage: monarch [options] [command]
 
     Commands:
 
