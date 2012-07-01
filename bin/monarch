@@ -11,7 +11,7 @@ var program = require('commander')
 _clogConfig.default();
 
 program
- 	.version('0.0.1')
+ 	.version('1.0.2')
  	.option('-d, --debug', 'Runs the application in debugging mode.');
 
 program
