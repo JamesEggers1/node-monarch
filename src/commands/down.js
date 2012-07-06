@@ -92,6 +92,10 @@ module.exports = (function(){
 		var startTime = _benchmarkTimer.getBenchmarkTime();
 		var endTime;
 		
+		if (typeof migration === "number"){
+			migration = migration.toString();
+		}
+		
 		console.log('');
 		var migrationsDirectory = _path.resolve(process.cwd() + "/migrations");
 		
@@ -130,9 +134,17 @@ module.exports = (function(){
 			if (script.name.substring(0,14) <= migration.substring(0,14)){break;}
 			if (script.name.substring(0,14) <= currentVersion
 				&& script.name.substring(0,14) > migration.substring(0,14)){
-				newVersion = script.name;
-				_clog.log("Reverting: " + newVersion);
-				script.down(_clog);
+				try{
+					_clog.log("Reverting: " + script.name);
+					script.down(_clog);
+					newVersion = script.name;
+				} catch (e) {
+					_clog.error("*******************************************************");
+					_clog.error("* " + e.name + ": " + e.message);
+					_clog.error("* Migrations will be halted.");
+					_clog.error("*******************************************************");
+					break;
+				}
 			}
 		}
 		

@@ -137,9 +137,17 @@ module.exports = (function(){
 			script = migrationArray[i];
 			if (migrationExists && script.name.substring(0,14) > migration.substring(0,14)){break;}
 			if (script.name.substring(0,14) > currentVersion){
-				newVersion = script.name;
-				_clog.log("Migrating To: " + newVersion);
-				script.up(_clog);
+				try{
+					_clog.log("Migrating To: " + script.name);
+					script.up(_clog);
+					newVersion = script.name;
+				} catch (e) {
+					_clog.error("*******************************************************");
+					_clog.error("* " + e.name + ": " + e.message);
+					_clog.error("* Migrations will be halted.");
+					_clog.error("*******************************************************");
+					break;
+				}
 			}
 		}
 		

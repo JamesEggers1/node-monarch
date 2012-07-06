@@ -1,6 +1,6 @@
 {
   "name": "monarch",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "author": "James Eggers <james.r.eggers@gmail.com> (http://www.jamesreggers.com/)",
   "description": "A command line utility for generic migrations in Node.js.",
   "homepage": "https://github.com/JamesEggers1/node-monarch",

@@ -27,6 +27,21 @@ describe("Up Command", function(){
 			errorWasCalled.should.be.true;
 			_helper.deleteRelativeDirectory("./migrations");
 		});
+		
+		it("should output an error if an exception is thrown within a migration", function(){
+			var count = 1
+				, path = "./migrations";
+				
+			_helper.errorMigrationSetup(path, count);
+			
+			var errorWasCalled = false;
+			_clog.error = function(){ errorWasCalled = true;};
+			
+			_up();
+			
+			errorWasCalled.should.be.true;
+			_helper.deleteRelativeDirectory(path);
+		});
 	});
 	
 	describe("Migrating Up", function(){

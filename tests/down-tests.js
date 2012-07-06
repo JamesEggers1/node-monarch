@@ -8,7 +8,7 @@ var _timestamp = require("../src/utils/timestamp")
 	, _clog = require("clog")
 	, _clogConfig = require("../configs/clog-config").none();
 	
-describe("Up Command", function(){
+describe("Down Command", function(){
 	describe("Error Cases", function(){
 		it("should output an error if the migrations directory does not exist.", function(){
 			var errorWasCalled = false;
@@ -36,6 +36,22 @@ describe("Up Command", function(){
 			_down("doesntExist.js");
 			errorWasCalled.should.be.true;
 			_helper.deleteRelativeDirectory("./migrations");
+		});
+		
+		it("should output an error if an exception is thrown within a migration", function(){
+			var count = 1
+				, path = "./migrations";
+				
+			_helper.errorMigrationSetup(path, count);
+			_helper.createMigrationTrackerFile(path, "201206301747E0.js");
+			
+			var errorWasCalled = false;
+			_clog.error = function(){ errorWasCalled = true;};
+			
+			_down(0);
+			
+			errorWasCalled.should.be.true;
+			_helper.deleteRelativeDirectory(path);
 		});
 	});
 	
