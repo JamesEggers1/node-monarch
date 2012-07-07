@@ -27,7 +27,7 @@ module.exports = (function(){
 	 * @param {string} path The directory or path to create.
 	 */
 	var _establishMigrationsDirectory = function(path){
-		if (!_path.existsSync(path)){
+		if (!_fs.existsSync(path)){
 			_clog.warn("*******************************************************");
 			_clog.warn("* Migrations directory not found.");
 			_clog.warn("* Creating migrations directory. at '" + path + "'.");

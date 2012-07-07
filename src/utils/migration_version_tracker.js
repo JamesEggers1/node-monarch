@@ -24,7 +24,7 @@ module.exports = (function(){
 	 */
 	var _readTrackerFile = function(path){
 		var trackerLocation = path + '/' + _filename;
-		if (!_path.existsSync(trackerLocation)){
+		if (!_fs.existsSync(trackerLocation)){
 			_clog.debug("* Migration Tracker file not found");
 			_clog.debug("* in '" + trackerLocation + "'.");
 			return "0";
@@ -41,7 +41,7 @@ module.exports = (function(){
 	 */
 	var _setTrackerFile = function(path, file){
 		var trackerLocation = path + '/' + _filename;
-		if (_path.existsSync(trackerLocation)){
+		if (_fs.existsSync(trackerLocation)){
 			_fs.unlinkSync(trackerLocation);
 		}
 		
