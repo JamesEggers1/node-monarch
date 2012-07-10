@@ -90,4 +90,33 @@ describe("Up Command", function(){
 			migrationCounter.should.equal(2);
 		});
 	});
+	
+	describe("Asynchronous Up Migration", function(){
+		var count = 3
+			, path = "./migrations";
+			
+		beforeEach(function(done){
+			_helper.asyncMigrationSetup(path, count);
+			done();
+		});
+	
+		afterEach(function(done){
+			_helper.deleteRelativeDirectory(path);
+			done();
+		});
+		
+		it("should migrate to the latest version if currently not at a version.", function(done){
+			var migrationCounter = 0
+				, migration;
+				
+			_clog.test = function(){
+				migrationCounter++;
+			};
+			
+			_up(migration, function(){
+				migrationCounter.should.equal(3);
+				done();
+				});
+		});	
+	});
 });

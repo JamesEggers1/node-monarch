@@ -19,7 +19,9 @@ program
 	.description("Creates a new migration script")
 	.action(function(description){
 		if (program.debug) {_clogConfig.debug();}
+		console.log("");
 		require("../src/commands/create")(description);
+		console.log("");
 	});
 	
 program
@@ -27,8 +29,9 @@ program
 	.description("Runs the migration scripts up to the latest or specified version.")
 	.action(function(migration){
 		if (program.debug) {_clogConfig.debug();}
-		
+		console.log("");
 		require("../src/commands/up")(migration);
+		console.log("");
 	});
 	
 program
@@ -36,8 +39,9 @@ program
 	.description("Runs the migration scripts down to the specified version.")
 	.action(function(migration){
 		if (program.debug) {_clogConfig.debug();}
-
+		console.log("");
 		require("../src/commands/down")(migration);
+		console.log("");
 	});
 
 program
@@ -45,7 +49,9 @@ program
 	.description("Retrieves the current version of the migrations.")
 	.action(function(){
 		if (program.debug) {_clogConfig.debug();}
+		console.log("");
 		require("../src/commands/status")();
+		console.log("");
 	});
 
 program.parse(process.argv);

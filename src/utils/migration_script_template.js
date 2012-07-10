@@ -6,12 +6,14 @@ module.exports = (function(){
 			''
 			, 'exports.name = "{{filename}}";'
 			, ''
-			, 'exports.up = function(logger){'
+			, 'exports.up = function(done){'
 			, ''
+			, 'done();'
 			, '};'
 			, ''
-			, 'exports.down = function(logger){'
+			, 'exports.down = function(done){'
 			, ''
+			, 'done();'
 			, '};'
 		].join(_eol);
 

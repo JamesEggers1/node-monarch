@@ -24,7 +24,7 @@
   "dependencies":{
 	"commander": "0.5.2",
 	"clog": "0.1.5",
-	"requiredir": "1.0.2"
+	"requiredir": "1.0.5"
   },
   "devDependencies": {
 	"should" : "0.6.3",

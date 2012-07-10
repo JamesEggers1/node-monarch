@@ -1,6 +1,7 @@
 module.exports = (function(){
 	"use strict";
-	var _timestamp = require("../utils/timestamp")
+	var _compat = require("../utils/node06compat")
+		, _timestamp = require("../utils/timestamp")
 		, _path = require("path")
 		, _fs = require("fs")
 		, _template = require("../utils/migration_script_template")
@@ -27,7 +28,7 @@ module.exports = (function(){
 	 * @param {string} path The directory or path to create.
 	 */
 	var _establishMigrationsDirectory = function(path){
-		if (!_path.existsSync(path)){
+		if (!_fs.existsSync(path)){
 			_clog.warn("*******************************************************");
 			_clog.warn("* Migrations directory not found.");
 			_clog.warn("* Creating migrations directory. at '" + path + "'.");
@@ -58,11 +59,9 @@ module.exports = (function(){
 	 * @param {string} description The description of the script.
 	 */
 	var _command = function(description) {
-		console.log('');
 		var migrationsDirectory = _path.resolve(process.cwd() + "/migrations");
 		_establishMigrationsDirectory(migrationsDirectory);
 		_createNewMigrationScript(migrationsDirectory, description);
-		console.log('');
 	};	
 	
 	return _command;
