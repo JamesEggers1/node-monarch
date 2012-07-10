@@ -14,7 +14,7 @@ module.exports = (function(){
 	 * @param {string} path The directory or path to verify.
 	 */
 	var _verifyMigrationsDirectory = function(path){
-		if (!_path.existsSync(path)){
+		if (!_fs.existsSync(path)){
 			_clog.error("*******************************************************");
 			_clog.error("* Migrations directory not found.");
 			_clog.error("* " + path);
