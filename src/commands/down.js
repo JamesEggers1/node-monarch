@@ -136,7 +136,7 @@ module.exports = (function(){
 				&& script.name.substring(0,14) > migration.substring(0,14)){
 				try{
 					_clog.log("Reverting: " + script.name);
-					script.down(_clog);
+					script.down(_clog.error);
 					newVersion = script.name;
 				} catch (e) {
 					_clog.error("*******************************************************");
