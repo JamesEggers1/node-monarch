@@ -5,7 +5,16 @@ module.exports = (function(){
 		, _clog = require("clog")
 		, _requiredir = require("requiredir")
 		, _benchmarkTimer = require("../utils/benchmarkTimer")
-		, _tracker = require("../utils/migration_version_tracker");
+		, _tracker = require("../utils/migration_version_tracker")
+		, _migrationsDirectory
+		, _callback
+		, _startTime
+		, _endTime
+		, _newVersion
+		, _migration
+		, _currentVersion
+		, _script
+		, _migrationArray;
 
 
 	/**
@@ -82,85 +91,111 @@ module.exports = (function(){
 		
 		return currentVersion;
 	};
+	
+	var index = 0;
+	var _executeMigration = function(idx){
+		if (index >= _migrationArray.length
+			|| (_migrationArray[idx].name.substring(0,14) <= _migration.substring(0,14))) { 
+				_finalizeCommand();
+				return;
+			}
+		
+		_script = _migrationArray[idx];
+		if (_script.name.substring(0,14) <= _currentVersion
+			&& _script.name.substring(0,14) > _migration.substring(0,14)){
+			try{
+				_clog.log("Reverting: " + _script.name);
+				_script.down(_migrationScriptFinished);
+				return;
+			} catch (e) {
+				_clog.error("*******************************************************");
+				_clog.error("* " + e.name + ": " + e.message);
+				_clog.error("* Migrations will be halted.");
+				_clog.error("*******************************************************");
+				_finalizeCommand();
+				return;
+			}
+		} else {
+			_executeMigration(++index);
+		}
+	};
+	
+	/**
+	 * Universal callback for when migration scripts finish.
+	 * @private 
+	 * @param {object} err An error that could have been raised during the migration.
+	 */
+	var _migrationScriptFinished = function(err){
+		if (typeof err !== "undefined"){
+			_clog.error(err);
+			_finalizeCommand();
+		}
+		
+		// emit event to trigger the next migration.
+		_newVersion = _migrationArray[index].name;
+		_executeMigration(++index);
+	};
+	
+	/**
+	 * Final output logging of the command's events.
+	 * @private 
+	 */
+	var _finalizeCommand = function(){
+		if (typeof _newVersion !== "undefined"){
+			_tracker.setCurrentVersion(_migrationsDirectory, _newVersion);
+		} else {
+			_clog.log("No migrations were ran at this time.");
+		}
+		
+		_clog.log("Migration Complete!");
+		_endTime = _benchmarkTimer.getBenchmarkTime();
+		_clog.log("(" + (_endTime - _startTime) + "ms)");
+		if (typeof _callback === "function") {_callback();}
+	};
 
 	/**
 	 * Exports a function that will migrate the scripts down.
 	 * @public 
 	 * @param {string} migration The required migration file or version to which to migrate.
 	 */
-	var _command = function(migration) {
-		var startTime = _benchmarkTimer.getBenchmarkTime();
-		var endTime;
+	var _command = function(migration, callback) {
+		_startTime = _benchmarkTimer.getBenchmarkTime();
+		_callback = callback;
 		
+		_migration = migration;
 		if (typeof migration === "number"){
-			migration = migration.toString();
-		}
+			_migration = migration.toString();
+		} 
+
+		_migrationsDirectory = _path.resolve(process.cwd() + "/migrations");
 		
-		console.log('');
-		var migrationsDirectory = _path.resolve(process.cwd() + "/migrations");
-		
-		if(!_verifyMigrationsDirectory(migrationsDirectory)){
-			console.log("");
+		if(!_verifyMigrationsDirectory(_migrationsDirectory)){
 			_clog.error("Unable to continue proceed.");
-			endTime = _benchmarkTimer.getBenchmarkTime();
-			_clog.log("(" + (endTime - startTime) + "ms)");
+			_endTime = _benchmarkTimer.getBenchmarkTime();
+			_clog.log("(" + (_endTime - _startTime) + "ms)");
+			_finalizeCommand("Migration Directory not found.");
 			return;
 		}
 		
-		if(!_verifyMigrationExists(migrationsDirectory, migration)){
-			console.log("");
+		if(!_verifyMigrationExists(_migrationsDirectory, migration)){
 			_clog.error("Unable to continue proceed.");
-			endTime = _benchmarkTimer.getBenchmarkTime();
-			_clog.log("(" + (endTime - startTime) + "ms)");
+			_endTime = _benchmarkTimer.getBenchmarkTime();
+			_clog.log("(" + (_endTime - _startTime) + "ms)");
+			_finalizeCommand("Specified migration not found.");
 			return;
 		} 
 		
-		var currentVersion = _getCurrentVersion(migrationsDirectory);
+		_currentVersion = _getCurrentVersion(_migrationsDirectory);
 		var migrations = _requiredir("./migrations");
-		var newVersion;
-		var script;
-		var i;
-		var len;
 		
-		var migrationArray = migrations.toArray()
+		_migrationArray = migrations.toArray()
 							.sort(_sortMigrationsDescending);
 		
 		_clog.log(migrations.length + " migration scripts located.");
-		_clog.log("Current Version: " + currentVersion);
+		_clog.log("Current Version: " + _currentVersion);
 		
-		for (i = 0, len = migrationArray.length; i < len; i++){
-			script = migrationArray[i];
-			if (script.name.substring(0,14) > currentVersion){continue;}
-			if (script.name.substring(0,14) <= migration.substring(0,14)){break;}
-			if (script.name.substring(0,14) <= currentVersion
-				&& script.name.substring(0,14) > migration.substring(0,14)){
-				try{
-					_clog.log("Reverting: " + script.name);
-					script.down(_clog.error);
-					newVersion = script.name;
-				} catch (e) {
-					_clog.error("*******************************************************");
-					_clog.error("* " + e.name + ": " + e.message);
-					_clog.error("* Migrations will be halted.");
-					_clog.error("*******************************************************");
-					break;
-				}
-			}
-		}
-		
-		if (i === len){newVersion = 0;}
-		
-		console.log("");
-		if (typeof newVersion !== "undefined"){
-			_tracker.setCurrentVersion(migrationsDirectory, newVersion);
-		} else {
-			_clog.log("No migrations were ran at this time.");
-		}
-		
-		_clog.log("Migration Complete!");
-		endTime = _benchmarkTimer.getBenchmarkTime();
-		_clog.log("(" + (endTime - startTime) + "ms)");
-		console.log('');
+		index = 0;
+		_executeMigration(index);
 	};	
 	
 	return _command;

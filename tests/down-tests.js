@@ -96,8 +96,60 @@ describe("Down Command", function(){
 				migrationCounter++;
 			};
 			
-			_down("20120630174703.js");
+			_down("20120630174723.js");
 			migrationCounter.should.equal(0);
+		});
+	});
+	
+	describe("Asynchronous Down Migration", function(){
+		var count = 3
+			, path = "./migrations";
+			
+		beforeEach(function(done){
+			_helper.asyncMigrationSetup(path, count);
+			_helper.createMigrationTrackerFile(path, "20120630174722.js");
+			done();
+		});
+	
+		afterEach(function(done){
+			_helper.deleteRelativeDirectory(path);
+			done();
+		});
+		
+		it("should migrate to the initial version if 0 is passed in.", function(done){
+			var migrationCounter = 0;
+			_clog.test = function(){
+				migrationCounter++;
+			};
+			
+			_down("0", function(){
+				migrationCounter.should.equal(3);
+				done();
+				});
+		});
+		
+		it("should migrate to the specified version if less than current version.", function(done){			
+			var migrationCounter = 0;
+			_clog.test = function(){
+				migrationCounter++;
+			};
+			
+			_down("20120630174720.js", function(){
+				migrationCounter.should.equal(2);
+				done();
+				});
+		});	
+		
+		it("should not migrate to the specified version if newer than current version.", function(done){
+			var migrationCounter = 0;
+			_clog.test = function(){
+				migrationCounter++;
+			};
+			
+			_down("20120630174723.js", function(){
+				migrationCounter.should.equal(0);
+				done();
+				});
 		});
 	});
 });

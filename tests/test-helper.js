@@ -160,7 +160,7 @@ module.exports = (function(){
 		}
 
 		for (var i = 0; i <  count; i++){
-			filename = "201206301747E" + i + ".js";
+			filename = "2012063017471" + i + ".js";
 			template = _errorTemplate.replace(/\{\{filename\}\}/g, filename);
 			_fs.writeFileSync(path + '/' + filename, template);
 		}
@@ -176,7 +176,7 @@ module.exports = (function(){
 		}
 
 		for (var i = 0; i <  count; i++){
-			filename = "201206301747A" + i + ".js";
+			filename = "2012063017472" + i + ".js";
 			template = _asyncTemplate.replace(/\{\{filename\}\}/g, filename);
 			_fs.writeFileSync(path + '/' + filename, template);
 		}

@@ -50,11 +50,9 @@ module.exports = (function(){
 		var startTime = _benchmarkTimer.getBenchmarkTime();
 		var endTime;
 		
-		console.log('');
 		var migrationsDirectory = _path.resolve(process.cwd() + "/migrations");
 		
 		if(!_verifyMigrationsDirectory(migrationsDirectory)){
-			console.log("");
 			_clog.error("Current Version: 0");
 			endTime = _benchmarkTimer.getBenchmarkTime();
 			_clog.log("(" + (endTime - startTime) + "ms)");
@@ -66,7 +64,6 @@ module.exports = (function(){
 		_clog.log("Current Version: " + currentVersion);
 		endTime = _benchmarkTimer.getBenchmarkTime();
 		_clog.log("(" + (endTime - startTime) + "ms)");
-		console.log('');
 	};	
 	
 	return _command;

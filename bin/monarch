@@ -5,13 +5,14 @@
  */
 
 var program = require('commander')
+	, pkg = require("../package.json")
 	, _clog = require("clog")
 	, _clogConfig = require("../configs/clog-config");
 
 _clogConfig.default();
 
 program
- 	.version('1.0.2')
+ 	.version(pkg.version)
  	.option('-d, --debug', 'Runs the application in debugging mode.');
 
 program

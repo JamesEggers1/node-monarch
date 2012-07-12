@@ -148,11 +148,13 @@ module.exports = (function(){
 	 * Final output logging of the command's events.
 	 * @private 
 	 */
-	var _finalizeCommand = function(){
-		if (typeof _newVersion !== "undefined"){
-			_tracker.setCurrentVersion(_migrationsDirectory, _newVersion);
-		} else {
-			_clog.log("You are currently at the most recent migration.");
+	var _finalizeCommand = function(err){
+		if (typeof err === "undefined"){
+			if (typeof _newVersion !== "undefined"){
+				_tracker.setCurrentVersion(_migrationsDirectory, _newVersion);
+			} else {
+				_clog.log("You are currently at the most recent migration.");
+			}
 		}
 		
 		_clog.log("Migration Complete!");
@@ -180,6 +182,7 @@ module.exports = (function(){
 			_clog.error("Unable to continue proceed.");
 			_endTime = _benchmarkTimer.getBenchmarkTime();
 			_clog.log("(" + (_endTime - _startTime) + "ms)");
+			_finalizeCommand("Migration Directory not found.");
 			return;
 		}
 		
@@ -189,6 +192,7 @@ module.exports = (function(){
 				_clog.error("Unable to continue proceed.");
 				_endTime = _benchmarkTimer.getBenchmarkTime();
 				_clog.log("(" + (_endTime - _startTime) + "ms)");
+				_finalizeCommand("Specified migration not found.");
 				return;
 			} else {
 				_migrationExists = true;
