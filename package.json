@@ -15,7 +15,7 @@
     "node": ">=0.6"
   },
   "scripts": {
-	"test": "mocha tests/all-tests.js -R spec"
+	"test": "mocha tests/test--all.js -R spec"
   },
   "keywords": [ "migrate", "migration", "change management"],
   "bugs": {

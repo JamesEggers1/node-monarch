@@ -1,11 +1,11 @@
 module.exports = (function(){
 	"use strict";
 
-	var _compat = require("../src/utils/node06compat")
+	var _compat = require("../../src/utils/node06compat")
 		, _fs = require("fs")
 		, _path = require("path")
 		, _rimraf = require("rimraf")
-		, _eol = require("../src/utils/eol")
+		, _eol = require("../../src/utils/eol")
 		, _template =[
 				''
 				, 'var _clog = require("clog");'

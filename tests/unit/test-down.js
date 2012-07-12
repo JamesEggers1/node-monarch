@@ -1,12 +1,12 @@
 "use strict";
 
-var _timestamp = require("../src/utils/timestamp")
+var _timestamp = require("../../src/utils/timestamp")
 	, _mocha = require("mocha")
 	, _should = require("should")
-	, _down = require("../src/commands/down")
-	, _helper = require("./test-helper")
+	, _down = require("../../src/commands/down")
+	, _helper = require("./unittest-helper")
 	, _clog = require("clog")
-	, _clogConfig = require("../configs/clog-config").none();
+	, _clogConfig = require("../../configs/clog-config").none();
 	
 describe("Down Command", function(){
 	describe("Error Cases", function(){
