@@ -1,6 +1,10 @@
 Change Log
 ==============
 
+## 2012-07-30 ##
+* Added Dev Dependency of `pg` for Postgres integration tests
+* Built out Integration-Helper-Postgres.js to be ready for `up` migrations tests.
+
 ## 2012-07-11 ##
 * Updated to 1.0.8
 * Updated CLI to use package.json version.
